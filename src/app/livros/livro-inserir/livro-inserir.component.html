@@ -1,17 +1,38 @@
 <h2>Cadastro de livros</h2>
 
 <mat-card>
+  <form (submit)="onAdicionarLivro(livroForm)" #livroForm="ngForm">
   <mat-form-field>
-    <input type="text" matInput placeholder="Nome do livro" [(ngModel)]="nome"/>
+    <input required
+    minlength="4"
+    type="text"
+    matInput placeholder="Nome do livro"
+    name="nome"
+    ngModel
+    #nome="ngModel"/>
+    <mat-error *ngIf="nome.invalid">Digite um nome válido</mat-error>
   </mat-form-field>
 
   <mat-form-field>
-    <input type="text" matInput placeholder="Autor" [(ngModel)]="autor">
+    <input required
+     type="text"
+     matInput placeholder="Autor"
+     name="autor"
+      ngModel
+      #autor="ngModel"/>
+      <mat-error *ngIf="autor.invalid">Digite um autor válido</mat-error>
   </mat-form-field>
 
   <mat-form-field>
-    <input type="number" matInput placeholder="Número de páginas" [(ngModel)]="paginas">
+    <input required
+    type="number"
+    matInput placeholder="Número de páginas"
+    name="paginas"
+    ngModel
+    #paginas="ngModel">
+    <mat-error *ngIf="paginas.invalid">Digite um número de paginas válido</mat-error>
   </mat-form-field>
 
-  <button color="accent" mat-raised-button (click)="onAdicionarLivro()">Inserir livro</button>
+  <button color="accent" mat-raised-button>Inserir livro</button>
+</form>
 </mat-card>

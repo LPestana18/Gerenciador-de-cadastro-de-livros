@@ -3,6 +3,10 @@
     <mat-expansion-panel-header>Nome: {{livro.nome}}</mat-expansion-panel-header>
     <p>Autor: {{livro.autor}}</p>
     <p>Paginas: {{livro.paginas}}</p>
+    <mat-action-row>
+      <button mat-button color="primary">EDITAR</button>
+      <button mat-button color="warn">REMOVER</button>
+      </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
 <p class="mat-body-1" style="text-align: center;" *ngIf="livros.length <= 0">
