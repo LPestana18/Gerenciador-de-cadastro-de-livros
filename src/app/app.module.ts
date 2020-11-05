@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CabecalhoComponent } from './cabecalho/cabecalho.component';
 import { LivroListaComponent } from './livros/livro-lista/livro-lista.component';
+import { HttpClientModule} from '@angular/common/http'
 
 /** imports angular material*/
 import { MatInputModule } from '@angular/material/input';
@@ -33,6 +34,7 @@ import { LivroService } from './livros/livro.service';
     MatButtonModule,
     MatToolbarModule,
     MatExpansionModule,
+    HttpClientModule,
   ],
   providers: [LivroService],
   bootstrap: [AppComponent]
