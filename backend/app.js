@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const Livro = require('./models/livro')
 
 const livros = [
   {
@@ -17,6 +19,13 @@ const livros = [
   }
 ]
 
+mongoose.connect('mongodb+srv://cliente:<password>@cluster0.jzkvl.mongodb.net/app-livro?retryWrites=true&w=majority')
+.then(() => {
+  console.log("Conexão OK")
+}).catch(() => {
+  console.log("Conexão NOK")
+})
+
 app.use(bodyParser.json());
 
 app.use ((req, res, next) => {
@@ -27,7 +36,14 @@ app.use ((req, res, next) => {
   });
 
 app.post('/api/livros',(req, res, next) =>{
-
+  const livro = new Livro({
+    nome: req.body.nome,
+    autor: req.body.autor,
+    paginas: req.body.paginas
+  })
+  livro.save();
+  console.log(livro);
+  res.status(201).json({mensagem: 'Livro inserido'})
 })
 
 app.use('/api/livros',(req,res, next) => {
