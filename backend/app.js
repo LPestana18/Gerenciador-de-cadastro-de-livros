@@ -2,30 +2,17 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const Livro = require('./models/livro')
+const Livro = require('./models/livro');
 
 const livros = [
-  {
-    id: '1',
-    nome: 'Senhor dos aneis',
-    autor: 'tolkien',
-    paginas: 578
-  },
-  {
-    id: '2',
-    nome: 'Harry porter',
-    autor: 'não sei',
-    paginas: 345
-  }
 ]
 
-mongoose.connect('mongodb+srv://cliente:<password>@cluster0.jzkvl.mongodb.net/app-livro?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://lucas:nw9i8Dmd10dHRXdz@cluster0.5m8t5.mongodb.net/livro?retryWrites=true&w=majority',{ useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => {
   console.log("Conexão OK")
 }).catch(() => {
-  console.log("Conexão NOK")
+  console.log('Conexão não está funcionando!')
 })
-
 app.use(bodyParser.json());
 
 app.use ((req, res, next) => {
@@ -35,22 +22,44 @@ app.use ((req, res, next) => {
   next();
   });
 
-app.post('/api/livros',(req, res, next) =>{
+app.post('/api/livros', (req, res, next) => {
   const livro = new Livro({
     nome: req.body.nome,
     autor: req.body.autor,
     paginas: req.body.paginas
   })
-  livro.save();
-  console.log(livro);
-  res.status(201).json({mensagem: 'Livro inserido'})
+  livro.save()
+  .then(livroInserido => {
+    res.status(201).json({
+      mensagem: 'Livro inserido',
+      id: livroInserido._id
+    })
+  })
+
+});
+
+app.get('/api/livro', (req, res, next) => {
+  Livro.find().then(documents => {
+    console.log(documents)
+    res.status(200).json({
+      mensagem: "Tudo Ok",
+      livros: documents
+    })
+  })
 })
 
-app.use('/api/livros',(req,res, next) => {
+app.use('/api/livro',(req,res, next) => {
   res.status(200).json({
     mensagem: "Tudo OK",
-    clientes: clientes
+    livros: livros
     });
+});
+
+app.delete('/api/livros/:id', (req, res, next) => {
+  Livro.deleteOne({_id: req.params.id}).then((resultado) => {
+    console.log(resultado);
+    res.status(200).json({mensagem: "Livro removido"})
+  });
 });
 
 module.exports = app;
