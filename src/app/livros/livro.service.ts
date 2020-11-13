@@ -62,7 +62,25 @@ removerLivro(id: string) : void {
   });
 }
 
+atualizarLivro(id: string, nome: string, autor: string, paginas: number) {
+  const livro : Livro = {id, nome, autor, paginas};
+  this.htpClient.put(`http://localhost:3001/api/livros/${id}`, livro)
+  .subscribe((res =>{
+    const copia = [...this.livros];
+    const indice = copia.findIndex( liv => liv.id === livro.id);
+    copia[indice] = livro;
+    this.livros = copia;
+    this.listaLivrosAtualizada.next([...this.livros]);
+  }));
+}
+
   getListaLivrosAtualizadaObservable(){
     return this.listaLivrosAtualizada.asObservable();
+  }
+
+  getLivro(idLivro: string) {
+    //return {...this.livros.find((liv) => liv.id === idLivro)};
+    return this.htpClient.get<{_id: string, nome: string, autor: string, paginas: number}>
+    (`http://localhost:3001/api/livros/${idLivro}`);
   }
 }
